@@ -5,10 +5,10 @@ class DevelopmentConfig(Config):
     UPLOAD_FOLDER = './app/static/uploads'
     MAX_CONTENT_PATH = 16 * 1024 * 1024
     
-    MYSQL_HOST = 'localhost'
-    MYSQL_USER = 'root'
-    MYSQL_PASSWORD = ''
-    MYSQL_DB = 'idcschools'
+    MYSQL_HOST = 'forlogdb.mysql.database.azure.com'
+    MYSQL_USER = 'forlogroot@forlogdb'
+    MYSQL_PASSWORD = 'Juan4544642'
+    MYSQL_DB = 'forlogdb'
     
 
 
