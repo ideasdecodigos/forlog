@@ -1,0 +1,581 @@
+@import "root";
+
+@mixin fontAwsomeFormat {
+    i {
+        padding: none;
+        margin: none;
+        box-sizing: border-box;
+        border: none;
+        color: $bg-parallel;
+    }
+}
+
+@mixin browser {
+
+
+    .cont-browser {
+        display: inline-flex;
+        border: solid 2px grey;
+        border-radius: 5px;
+        padding: 10px;
+        width: 80%;
+        max-width: 400px;
+        margin: auto;
+
+        input {
+            background-color: transparent;
+            width: 100%;
+            border: none;
+            offset: none;
+            outline: none;
+            color: #888;
+        }
+
+    }
+}
+
+@mixin sub-menu {
+    .sub-menu {
+        position: absolute;
+        top: 30px;
+        background: bg-primary($tone + 5);
+        display: none;
+        padding: 0px;
+
+        li,
+        li a {
+            display: flex;
+            margin: 5px;
+            gap: 5px;
+            @include fontAwsomeFormat();
+
+            &:hover {
+                // border-radius: 50%;
+                // padding: 5px;
+                background: bg-primary($tone + 10);
+            }
+        }
+
+        &:after {
+            bottom: 100%;
+            left: 50%;
+            border: solid transparent;
+            content: "";
+            position: absolute;
+            border-bottom-color: bg-primary($tone + 5);
+            ;
+            border-width: 15px;
+            margin-left: -15px;
+        }
+    }
+}
+
+@mixin links($bg-ground: white, $fg-color: black, $width: 300px) {
+    background-color: $bg-ground;
+    color: $fg-color;
+
+    ul {
+        width: 100%;
+        display: flex;
+        list-style: none;
+        width: 100%;
+        flex-wrap: wrap;
+        border-bottom: thick solid blue;
+        position: relative;
+
+        li {
+            // position: absolute;
+            background-color: $width;
+            padding: 0 20px;
+            border-bottom: thick solid pink;
+            margin-top: 5px;
+
+            a {
+                text-decoration: none;
+            }
+
+            &:hover {
+                border: thick solid red;
+                border-bottom: thick solid #fff;
+                background-color: white;
+            }
+        }
+
+    }
+
+}
+
+@mixin editPic() {
+    i {
+        display: none;
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background-color: white;
+        // color: black;
+        padding: 5px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: .5s;
+        border: 2px solid bg-primary($tone);
+        color: $bg-parallel;
+
+        &:hover {
+            color: bg-primary($tone);
+            border: none;
+        }
+    }
+
+    
+    
+    .dropdown {
+        width: 100%;
+        background: #ddd;
+        border-radius: 4px;
+        box-shadow: 0 0 40px -10px #000;
+        color: #333;
+        margin-top: 4px;
+        display: none;
+        max-width: 150px;
+        transition: all .5s;
+        position: absolute;
+        z-index: 5;
+        right: 5%;
+        &:before {
+            bottom: 100%;
+            left: 80%;
+            border: solid transparent;
+            content: "";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-color: transparent;
+            border-bottom-color: #ddd;
+            border-width: 15px;
+            margin-left: -15px;
+        }
+
+        a,
+        p {
+            text-decoration: none;
+            display: block;
+            padding: 10px ;
+            margin: 0;
+            transition: all .1s;
+            color: #333;
+            text-align: left;
+            border-radius: 3px;
+
+            span {
+                float: right;
+            }
+
+            &:hover {
+                background: bg-primary($tone);
+                transform: scale(1.05);
+                color: #ddd;
+                box-shadow: 0 0 30px -10px #000
+            }
+        }
+    }
+}
+
+@mixin mx-post() {
+    a {
+        text-decoration: none;
+        position: relative;
+    }
+
+    em,
+    cite {
+        position: absolute;
+        right: 10px;
+        color: $bg-dark;
+    }
+
+    max-width: 600px;
+    padding:30px 20px;
+    margin: 40px auto;
+    overflow: hidden;
+    display: grid;
+    border-radius: 50px;
+    border-radius: 12px;
+    background: #f2f2f2;
+    box-shadow: 14px 14px 25px #797979,
+    -14px -14px 25px #ffffff;
+}
+
+@mixin buttons ($width: none, $margin: none, $padding: 5px, $font-size: none) {
+    width: $width;
+    margin: $margin;
+    padding: $padding;
+    font-size: $font-size;
+    text-decoration: none;
+    cursor: pointer;
+    gap: 10;
+    background-color: bg-primary($tone);
+    color: $fg-light;
+    border: none;
+    border-radius: 3px;
+
+}
+
+@mixin otherPosts {
+
+    .cont-author {
+        h3,
+        ul {
+            text-align: left;
+
+            li a {
+                text-decoration: none;
+                color: $bg-parallel;
+            }
+        }
+
+        .sub-posts {
+            background-color: rgba(0, 0, 0, 0.2);
+            width: 100%;
+            text-align: center;
+            border-radius: 10px;
+
+            .other-posts {
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.25), inset 0px -1px 2px rgba(255, 255, 255, 0.9);
+                background-color: rgba(0, 0, 0, 0.2);
+                margin: 30px 10px;
+                position: relative;
+                text-align: center;
+                width: 200px;
+                border-radius: 5px;
+                border-top: 10px solid $bg-parallel;
+                cursor: pointer;
+                padding: 10px;
+                display: inline-grid;
+                font-size: 0.8rem;
+
+                blockquote {
+                    display: inline-flex;
+                    gap: 10px;
+                    text-align: center;
+                    margin: auto;
+                }
+
+                h3 {
+                    color: $bg-parallel;
+                }
+
+                figcaption {
+                    text-align: justify;
+                    overflow: hidden;
+                    max-width: 100%;
+                    padding: 10%;
+                    padding-bottom: 0;
+                    margin: 0 auto;
+                    overflow: hidden;
+
+                    &:before {
+                        text-align: center;
+                        transform: translateX(-50%);
+                        background-color: bg-primary($tone - 5);
+                        border-radius: 50%;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+                        color: $bg-parallel;
+                        content: "\f10e";
+                        font-family: 'FontAwesome';
+                        font-size: 2em;
+                        left: 50%;
+                        line-height: 60px;
+                        position: absolute;
+                        top: -35px;
+                        width: 60px;
+                    }
+                }
+            }
+
+            .other-posts *,
+            .other-posts *:before {
+                box-sizing: border-box;
+                transition: all 0.1s ease-out;
+            }
+        }
+    }
+}
+
+@mixin alert ($clr : 240) {
+    background-color: hsl($clr, 100%, 90%);
+    border: 3px solid hsl($clr , 100%, 50%);
+    border-left: 15px solid hsl($clr, 100%, 50%);
+    border-radius: 5px;
+    transition: 0.5s;
+    cursor: pointer;
+    color: black;
+
+    margin: 10px auto;
+    padding: 10px;
+    padding-left: 20px;
+    text-align: left;
+
+    z-index: 5;
+    position: relative;
+    max-width: 700px;
+    min-height: 80px;
+
+    &:hover {
+        color: black;
+        background-color: hsl($clr, 100%, 80%);
+    }
+
+    .info-tab {
+        background-color: inherit;
+        border: 2px solid transparent;
+        border-color: inherit;
+        border-top-right-radius: 20%;
+        border-bottom-right-radius: 20%;
+        width: 45px;
+        position: absolute;
+        left: -29px;
+        text-align: center;
+        padding: 10px;
+    }
+
+
+
+
+}
+
+@mixin forms($display: block, $padding: 20px 5%, $max: 100%) {
+    display: $display;
+    padding: $padding;
+    gap: 5px;
+    max-width: $max;
+    margin: 10px auto;
+
+    input,
+    button,
+    textarea,
+    select {
+        padding: 5px;
+        max-width: 100%;
+        background-color: transparent;
+        color: inherit;
+        border: solid 2px #666;
+        border-radius: 5px;
+    }
+
+    // @include buttons;
+
+}
+
+@mixin populars {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding-top: 50px;
+    position: relative;
+
+    .newest,
+    .liked,
+    .commented,
+    .visited {
+        background-color: rgba(0, 0, 0, 0.2);
+        margin: 5px auto;
+        padding: 5px;
+        border-radius: 5px;
+
+        h1 {
+            font-size: 1rem;
+            color: $bg-parallel;
+            cursor: pointer;
+
+            i {
+                float: right;
+            }
+        }
+
+        section {
+            border-radius: inherit;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            margin: 10px auto;
+            font-size: 10px;
+
+            p {
+                font-size: 1rem;
+            }
+
+            div {
+                color: $bg-parallel;
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+                display: block;
+            }
+        }
+
+    }
+}
+
+@mixin hashtags {
+    .cont-tags {
+        text-align: right;
+        font-size: 12px;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+        margin: 10px;
+
+        strong {
+            display: inline-block;
+            background-color: $bg-parallel;
+            color: $fg-light;
+            text-shadow: 0.1px 0.5px 2px black;
+            border-radius: 2px;
+            padding: 1px 5px;
+            margin: 2px;
+            position: relative;
+            clip-path: polygon(6px 0px, 100% 0px, 100% 100%, 0% 100%, 0% 6px);
+
+            &:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 6px;
+                height: 6px;
+                background: #ccc;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.9);
+                border-radius: 0 0 6px 0;
+                transition: transform 500ms;
+            }
+
+        }
+    }
+}
+
+@mixin frecuentlyUsers {
+
+
+    #users {
+        max-width: 100%;
+        position: relative;
+        height: 150px;
+
+
+        #wrapper {
+            width: inherit;
+            max-width: 100%;
+            position: absolute;
+
+            #carousel {
+                overflow: hidden;
+                scroll-behavior: smooth;
+                scrollbar-width: none;
+
+                &::-webkit-scrollbar {
+                    height: 0;
+                }
+            }
+
+            #prev,
+            #next {
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                background: rgba(255, 255, 255, 0.5);
+                border: none;
+                padding: 8px;
+                border-radius: 50%;
+                outline: 0;
+                cursor: pointer;
+                position: absolute;
+
+                top: 50%;
+                transform: translate(50%, -50%);
+            }
+
+            #prev {
+                left: 0;
+                display: none;
+            }
+
+            #next {
+                right: 0;
+                transform: translate(-50%, -50%);
+            }
+
+            #content {
+                display: grid;
+                grid-gap: 10px;
+                grid-auto-flow: column;
+                margin: auto;
+                box-sizing: border-box;
+
+                figure.item {
+                    min-width: 200px;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    color: inherit;
+                    position: relative;
+                    padding: 10px;
+                    border-radius: 5px;
+
+                    .user-foto {
+                        width: 50px;
+                        height: 50px;
+                        background-color: bg-primary($tone );
+                        color: white;
+                        display: block;
+                        border-radius: 50%;
+                        overflow: hidden;
+                        text-align: center;
+                        line-height: 50px;
+                        margin: auto;
+                    }
+
+                    div {
+                        text-align: center;
+
+                        figcaption {
+                            font-weight: bold;
+                            font-size: 15px;
+                        }
+
+                        blockquote {
+                            font-size: 10px;
+                        }
+
+                        span {
+                            font-size: 10px;
+                        }
+                    }
+
+                    i {
+                        cursor: pointer;
+                        float: right;
+                        color: $bg-parallel;
+                    }
+
+                    .btn {
+                        clear: both;
+                        height: 20px;
+
+                        button {
+                            cursor: pointer;
+                            float: right;
+                            padding: 2px 5px;
+                            border: thin solid bg-primary($tone );
+                            ;
+                            background-color: transparent;
+                            border-radius: 10px;
+                            color: inherit;
+                        }
+
+                        button.Unfollow {
+                            border: thin solid $bg-parallel;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

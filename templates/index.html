@@ -1,0 +1,76 @@
+{% extends './template.html' %}
+
+{% block title %}index{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+
+{% block body %}
+
+<div class="index"> 
+   <div class="logo">
+      <img src="{{ url_for('static', filename='files/logo.png') }}" alt="logo">
+   </div>
+
+   <div class="content">
+      <div class="sub-content"> 
+         <div class="title">
+            <h1><span>For</span><span>log</span></h1>
+         </div>
+         <div class="slogan">
+            <p>Addicted to knowledge, with a simple philosophy of life!</p>
+         </div>
+      </div>
+      <div class='cont'>
+         <div class="carousel">
+            <div>
+               <ul class="droper">
+                  <li>And be you</li>
+                  <li>Socialize</li>
+                  <li>Talk</li>
+                  <li>Learn</li>
+                  <li>Teach</li>
+                  <li>Answer</li>
+                  <li>Ask</li>
+               </ul>
+            </div>
+            <span> :about anythig!</span>
+         </div>
+      </div>
+   </div>
+   <div class="video">
+      <!-- <video src="{{ url_for('static', filename='files/intro.mp4') }}"></video> -->
+      <video width="" height="auto" controls preload="auto" muted autoplay loop>
+         <source src="{{ url_for('static', filename='files/intro.mp4') }}" type="video/mp4">
+         <!-- <source src="movie.ogg" type="video/ogg"> -->
+         Your browser does not support the video tag.
+       </video>
+   </div>
+</div>
+
+<script>
+   $(function () {
+
+      $('#xxx').click(function () {
+         $.ajax({
+            url: '/xxx',
+            type: 'post',
+            data: {
+               text: 'hola mundo cruel',
+               'name': 'jose manuel'
+            },
+            success: function (data) {
+               $('.div').html(data)
+            },
+            error: function (eror) {
+               console.log(eror)
+            }
+         })
+      })
+   });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends './template.html' %}
+
+{% block title %}Alerts{% endblock %}
+
+{% block css %}
+    <style>
+        .nofications{
+            display: block;
+            margin-top: 200px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="cont-main">
+	<div class="filter">
+        <label for="filter"> <i class="fa fa-search"></i> Filter by category</label>
+        <input type="search" id="filter" onchange="myFunction()" onkeyup="myFunction()" placeholder="Filter" list="filters">
+        <datalist id="filters">
+            <option value="users">
+            <option value="posts">
+            <option value="followers">
+            <option value="likes">
+            <option value="comments">
+            <option value="comments_likes">
+            <option value="posts_likes">
+        </datalist>
+        <!-- <input type="reset" value="reset" onclick="$('#filter').val('');myFunction();"> -->
+    </div>
+    <div class="alerts"></div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+ 
+    
+<script>
+$(function () {
+        showAlerts()
+});
+
+$("#filter").keyup(function(){
+			if($(this).val() != ''){
+				$('#bkd').addClass('fa-spinner fa-pulse')
+			}else{
+				$('#bkd').removeClass('fa-spinner fa-pulse')
+			}
+		})
+
+	// $(function () {
+	// 	$.ajax({
+	// 		url: "{{ url_for('randomUsers') }}",
+	// 		type: 'POST',
+	// 		data: { id_user: "{{ session['id_user'] }}" },
+	// 		success: function (data) {
+	// 			for (const key in data) {
+	// 				const user = data[key];
+	// 				$('.follow').append(`
+	// 						<figure>
+	// 							<i class="fa fa-xmark" onclick="$(this).parent().hide()"></i>
+	// 							<div onclick="location.href='/profile/`+ user[0] + `'">
+	// 								<div class="user-foto">`+ user[3] + `</div>
+	// 								<div class="search">
+	// 									<figcaption>`+ user[1] + `</figcaption>
+	// 									<blockquote>`+ user[2] + `</blockquote>
+	// 								</div>									
+	// 								<strong>`+ user[5] + ` <em>Following</em></strong>
+	// 								<strong class='fl'>`+ user[6] + ` <em>Followers</em></strong>
+	// 							</div>
+	// 							<div class="btn">
+	// 								<button class="`+ user[4] + `" onclick="follow_unfollow(` + user[0] + `,$(this), $(this).parents().siblings('div').children('strong.fl'))">` + user[4] + `</button>
+	// 							</div>
+	// 						</figure>
+	// 					`)
+	// 			}
+	// 		}
+	// 	})
+	// })
+
+
+	function myFunction() {
+		// Declare variables
+		let filter, tag, i, txt;
+		filter = document.getElementById('filter').value.toUpperCase();
+
+		// Loop through all list items, and hide those who don't match the search query
+		for (i = 0; i < $('.sub-alert').length; i++) {
+			tag = $('.content')[i].getElementsByTagName("strong")[0];
+			if ($(tag).text().toUpperCase().indexOf(filter) > -1) {
+				$('.sub-alert')[i].style.display = '';
+			} else {
+				$('.sub-alert')[i].style.display = 'none';
+			}
+		}
+	}
+
+
+function showAlerts() {
+    let trash = "", icon = "", url = "", fdate = "";
+    // $(".notifications").html(`<i class='quit fa fa-delete-left' onclick="$('#btn-notification').click();"></i>`);
+
+    $.post("{{ url_for('notifications') }}", { info: '' }, function (data) {
+        for (const key in data) {
+            const alert_info = data[key];
+            if (data[key] != undefined) {
+                if (alert_info[7] == "true" || alert_info[5] == "public") {
+                    if (alert_info[5] == "private") {
+                        trash = `<span class="fa fa-trash" onclick="delAlerts('` + alert_info[0] + `');"></span>`;
+                    } else { trash = ""; }
+
+                    switch (alert_info[6]) {
+                        case "users":
+                            icon = "<i class='fa fa-user fa-beat'></i>";
+                            url = "location.href='/profile/" + alert_info[2] + "'";
+                            break;
+                        case "posts":
+                            icon = "<i class='fa fa-file-word fa-beat'></i>";
+                            url = "location.href='/post/" + alert_info[3] + "-" + alert_info[1] + "'";
+                            break;
+                        case "comments":
+                            icon = "<i class='fa fa-comments fa-beat'></i>";
+                            url = "location.href='/post/" + alert_info[3] + "-" + alert_info[1] + "#comment" + alert_info[3] + "'";
+                            break;
+                        case "posts_likes":
+                            icon = "<i class='fa fa-thumbs-up fa-beat'></i>";
+                            url = "location.href='/post/" + alert_info[3] + "-" + alert_info[1] + "#comment" + alert_info[3] + "'";
+                            break;
+                        case "comments_likes":
+                            icon = "<i class='fa fa-heart fa-beat'></i>";
+                            url = "location.href='/post/" + alert_info[3] + "-" + alert_info[1] + "'";
+                            break;
+                        case "followers":
+                            icon = "<i class='fa fa-users fa-beat'></i>";
+                            url = "location.href='/profile/" + alert_info[2] + "'";
+                            break;
+                        default:
+                            icon = "<i class='fa fa-inbox fa-beat'></i>";
+                    }
+                  
+
+                    $('.alerts').append(`                        
+                    <div class="sub-alert">
+                        <div class="content alerts-`+ alert_info[6] + `" onclick="readAlerts('` + alert_info[0] + `');` + url + ` ">
+                            `+ trash + `
+                            <div class="info-tab">`+ icon + `</div>
+                            <strong>`+ alert_info[6].toUpperCase() + `!</strong> 
+                            <p>`+ alert_info[4] + `</p> 
+                            <em>`+alert_info[8].slice(0, 17)+`</em>
+                            <span>`+ alert_info[8].slice(17, -3) + `</span>                             
+                        </div>                     
+                        </div>                     
+                    `)
+                }
+            }
+        }
+    });
+}
+
+function readAlerts(id) {
+    $.post("{{ url_for('readAlerts') }}", { id_alert: id }, function (data) {
+        $('.notifications').html('');
+        showAlerts();
+    });
+}
+
+function delAlerts(id) {
+    $('.notifications').html('');
+    $.post("{{ url_for('delAlerts') }}", { id_alert: id }, function (data) {
+        showAlerts();
+    });
+}
+
+</script>
+{% endblock %}

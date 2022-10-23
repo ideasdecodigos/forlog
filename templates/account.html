@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="description" content="IDCSchool oficial website">
+    <meta name="keywords" content="dashboard, account, IDCSchool, blog, forum">
+    <meta name="author" content="Juan C. Paniagua R.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='imgs/imgclear.png') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='imgs/imgclear.png') }}" type="image/x-icon">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+
+    <script src="{{ url_for('static', filename='lib/jquery-3.6.0.min.js') }}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://kit.fontawesome.com/d8f67b4e4d.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="main-container">
+        <div class="main-left">
+            <ul>
+                <li onclick="location.href='/';"><i class="fa fa-home"></i> <span>Home</span></li>
+                <li><i class="fa fa-shield-heart"> </i> <span>About</span></li>                
+                {% if session['mail_user'] == 'maria@gmail.com' %}
+                <li><i class="fa fa-inbox"> </i> <span>Inbox</span></li>
+                {% endif %}
+                <li onclick="location.href='/logout';"> <i class="fa fa-right-from-bracket"> </i> <span>Logout</span> </li>
+            </ul>
+        </div>
+        <div class="main-center">
+            <div class="header">
+                {% if session['wallpaper_user'] != "": %}
+                <img src="{{ session['wallpaper_user'] }}">
+                {% endif %}
+                <i class="fa-solid fa-pen-to-square" onclick="$('#edtwp').slideToggle()"></i>
+                <div class="edit dropdown" id="edtwp">
+                    <p onclick="$(this).parent().hide()">Cancel <span class="fa fa-xmark"></span></p>
+                    <hr>
+                    <a href="/upload/wpurl">Link <span class="fa fa-link"></span></a>
+                    <a href="/upload/wpupload">Upload <span class="fa fa-upload"></span></a>
+                </div>
+
+            </div>
+            <div class="theme">
+                <i class="fa fa-circle-half-stroke" id="default"></i>
+                <i class="fa fa-sun" id="light"></i>
+                <i class="fa fa-moon" id="dark"></i>
+            </div>
+            <div class="profile">
+                <div class="foto">
+                    {% if session['foto_user'] != "": %}
+                    <img src="{{ session['foto_user'] }}">
+                    {% else: %}
+                    <figure>
+                        <strong>{{ session['name_user'][:1] }}</strong>
+                    </figure>
+                    {% endif %}
+                    <i class="fa-solid fa-pen-to-square" onclick="$('#edtft').slideToggle()"></i>
+                    <div class="edit dropdown" id="edtft">
+                        <p onclick="$(this).parent().hide()">Cancel <span class="fa fa-xmark"></span></p>
+                        <hr>
+                        <a href="/upload/fturl">Link <span class="fa fa-link"></span></a>
+                        <a href="/upload/ftupload">Upload <span class="fa fa-upload"></span></a>
+                    </div>
+                </div>
+                <h1>{{ session["name_user"] }}</h1>
+                <summary>{{ session["about_user"] }}</summary>
+
+
+                <table>
+                    <tr>
+                        <th> {{ data['followers'] }}</th>
+                        <th> {{ data['following'] }}</th>
+                        <th> {{ data['total'] }}</th>
+                    </tr>
+                    <tr>
+                        <td>Followers</td>
+                        <td>Following</td>
+                        <td>Posts</td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <strong>ACCESS</strong>
+            <div class="new-post">
+                <a href="mailto:{{ session['mail_user'] }}" class="buttons">Contact <i
+                        class="fa-solid fa-envelope fa-bounce fa-stack"></i></a>
+                <a href="/updateUser" class="buttons">Settings <i class="fa fa-gear fa-spin fa-stack"
+                        style="--fa-animation-duration: 15s;"></i></a>
+                <a href="/createpost" class="buttons ">New
+                    <span class="fa-stack fa-lg">
+                        <i class="far fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-plus fa-stack-1x fa-beat"></i>
+                    </span>
+                </a>
+            </div>
+            <hr>
+            <div class="cont-slide">
+                <strong>FOR YOU</strong>
+                <div class="slide">
+
+                </div>
+                <i id="swiperight" class="fa fa-arrow-right-long fa-beat"></i>
+            </div>
+            <hr>
+            <script>
+                $(function () {
+                    $.ajax({
+                        url: "{{ url_for('randomUsers') }}",
+                        type: 'POST',
+                        data: { id_user: "{{ session['id_user'] }}" },
+                        success: function (data) {
+                            for (const key in data) {
+                                const user = data[key];
+                                $('.slide').append(`
+							<figure>
+								<i class="fa fa-xmark" onclick="$(this).parent().hide()"></i>
+								<div onclick="location.href='/profile/`+ user[0] + `'">
+									<div class="user-foto">`+ user[3] + `</div>
+									<div class="search">
+										<figcaption>`+ user[1] + `</figcaption>
+										<blockquote>`+ user[2] + `</blockquote>
+									</div>									
+									<strong>`+ user[5] + ` <em>Following</em></strong>
+									<strong><b>`+ user[6] + `</b> <em>Followers</em></strong>
+								</div>
+								<div class="btn">
+									<button class="`+ user[4] + `" onclick="follow_unfollow(` + user[0] + `,$(this), $(this).parents().siblings('div').children('strong').children('b'))">` + user[4] + `</button>
+								</div>
+							</figure>
+						`)
+                            }
+                        }
+                    })
+                })
+
+                $("#input-browser").keyup(function () {
+                    if ($(this).val() != '') {
+                        $('#bkd').addClass('fa-spinner fa-pulse')
+                    } else {
+                        $('#bkd').removeClass('fa-spinner fa-pulse')
+                    }
+                })
+                function follow_unfollow(iduser, btn, couter) {
+                    $.ajax({
+                        url: "/follow",
+                        type: 'post',
+                        data: { 'profile': iduser },
+                        success: function (data) {
+                            $(btn).text(data['text']);
+                            $(couter).text(data['followers']);
+                        }
+                    })
+                }
+            </script>
+            <strong>BROWSE</strong>
+            <div class="new-post">
+                <a href="/notifications" class="buttons">Inbox <i class="fa fa-bell fa-shake fa-stack"></i></a>
+                <a href="/friends" class="buttons">Cominity <i class="fa fa-users fa-fade fa-stack"></i></a>
+                <a href="/forum" class="buttons ">Search
+                    <span class="fa-stack fa-lg">
+                        <i class="far fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-globe fa-stack-1x fa-beat"></i>
+                    </span>
+                </a>
+            </div>
+            <hr>
+            <div class="about">
+                <strong>DETAILS</strong>
+                <table>
+                    <tr>
+                        <td><i class="fa fa-envelope"></i> mail:</td>
+                        <td><i class="fa fa-calendar-day"></i> member since:</td>
+                    </tr>
+                    <tr>
+                        <th>{{ session["mail_user"] }}</th>
+                        <th>{{ session["date_user"] }}</th>
+                    </tr>
+                    <tr>
+                        <td><i class="fa fa-flag"></i> country</td>
+                        <td><i class="fa fa-phone"></i> phone</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {% if session['country_user'] != "" %}
+                            {{ session["country_user"] }}
+                            {% endif %}
+                        </th>
+                        <th>
+                            {% if session['phone_user'] != "" %}
+                            {{ session["phone_user"] }}
+                            {% endif %}
+                        </th>
+                    </tr>
+                </table>
+
+            </div>
+            <hr>
+            <strong>GET READY</strong>
+            <div class="new-post">
+                
+                <a href="#"><i class="fa fa-handshake"> </i> Terms</a>
+                <a href="#"><i class="fa fa-scale-balanced"> </i> Policy</a>
+                <a href="#"><i class="fa fa-chalkboard-user"> </i> FAQs</a>
+                <a href="#"><i class="fa fa-share-nodes" onclick="navigator.clipboard.writeText(location.href);"></i> Share</a>
+                
+              
+            </div>
+        </div>
+        <div class="main-right">
+            <strong>READ ALSO</strong>
+            <div class="newest">
+                {% for otherPosts in data['posts'] -%}
+                {% if otherPosts[0] != data['id'] -%}
+
+                <section class="other-posts" onclick="location.href='/post/{{ otherPosts[7] }}'">
+                    <p>{{ otherPosts[1] }}</p>
+                    <em>{{ otherPosts[3] }}</em>
+                    <div>
+                        <i class="fa fa-eye"> {{ otherPosts[4] }} </i>
+                        <i class="fa fa-message"> {{ otherPosts[5] }} </i>
+                        <i class="fa fa-thumbs-up"> {{ otherPosts[6] }} </i>
+                    </div>
+                </section>
+
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <script>
+
+            /** SWITCH THEMES BLOCK */
+            $("#default").click(() => {
+                setTheme(['theme-default', 'fa-circle-half-stroke', 'Default']);
+            })
+
+            $("#light").click(() => {
+                setTheme(['theme-light', 'fa-sun', 'Light']);
+            })
+
+            $("#dark").click(() => {
+                setTheme(['theme-dark', 'fa-moon', 'Dark']);
+            })
+
+            function setTheme(arrayList) {
+                $('#main-menu-theme').removeClass('fa-circle-half-stroke fa-sun fa-moon');
+                localStorage.setItem('theme', arrayList);
+                $('#main-menu-theme').addClass(arrayList[1]);
+                $('#main-menu-theme > span').text(arrayList[2]);
+                document.documentElement.className = arrayList[0];
+            }
+
+            function getTheme() {
+                if (window && document.documentElement) {
+                    $('#main-menu-theme').removeClass('fa-circle-half-stroke fa-sun fa-moon');
+                    document.documentElement.className = window.localStorage.getItem("theme").split(',')[0];
+                    $('#main-menu-theme').addClass(window.localStorage.getItem("theme").split(',')[1]);
+                    $('#main-menu-theme > span').html(window.localStorage.getItem("theme").split(',')[2]);
+                }
+            }
+
+            // Immediately invoked function to set the theme on initial load
+            (function () {
+                //THEME IN MY CSS FILE = theme-default 
+                //CLASS ICON = fontwasome
+                //ICON TEXT = name of the theme
+                setTheme(['theme-default', 'fa-moon', 'Dark']);
+
+            });
+            /** END SWITCH THEMES BLOCK */
+
+            $(document).ready(function () {
+                //FROM THEME BLOCK
+                getTheme();
+            })
+        </script>
+</body>
+
+</html>

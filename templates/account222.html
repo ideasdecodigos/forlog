@@ -1,0 +1,122 @@
+{% extends './template.html' %}
+
+{% block title %}account{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="main-center">
+    <div class="mai-left">
+        <ul> 
+            <li><li class="fa fa-folder-plus"> </li> <span>New</span></li>
+            <li><li class="fa fa-gear"> </li> <span>Settings</span></li>
+            <li><li class="fa fa-headset"> </li> <span>Contact</span></li>
+            <li><li class="fa fa-inbox"> </li> <span>Notifications</span></li>
+            <hr>
+            <li><li class="fa fa-right-from-bracket"> </li> <span>Logoout</span></li>
+
+        </ul>
+    </div>
+    <div class="account">
+        <div class="header">
+            {% if session['wallpaper_user'] != "": %}
+                <img src="{{ session['wallpaper_user'] }}">
+            {% endif %}
+            <i class="fa-solid fa-pen-to-square"></i>
+            <div class="edit sub-menu">
+                <a href="/upload/wpurl"><b class="fa-solid fa-link"></b> Link</a>
+                <a href="/upload/wpupload"><b class="fa-solid fa-upload"></b> Unload </a>
+            </div>
+        </div>
+        <div class="profile">
+            <div class="foto">
+                {% if session['foto_user'] != "": %}
+                <img src="{{ session['foto_user'] }}">
+                {% else: %}
+                <figure>
+                    <strong>{{ session['name_user'][:1] }}</strong>
+                </figure>
+                {% endif %}
+                <i class="fa-solid fa-pen-to-square"></i>
+                <div class="edit sub-menu">
+                    <a href="/upload/fturl"><b class="fa-solid fa-link"></b> Link</a>
+                    <a href="/upload/ftupload"><b class="fa-solid fa-upload"></b> Upload</a>
+                </div>
+            </div>
+            <h1>{{ session["name_user"] }}</h1>
+            <summary>{{ session["about_user"] }}</summary>
+            <br>
+            <!-- <a href="/createpost" class="buttons">New Article</a>
+            <a href="/updateUser" class="buttons">Upate account</a>
+            <a href="mailto:{{ session['mail_user'] }}" class="buttons">Contact</a> -->
+
+            <div>
+                <ul>
+                    <li>
+                        <strong> {{ data['followers'] }}</strong>
+                        <span>Followers</span>
+                    </li>
+                    <li>
+                        <strong>{{ data['following'] }}</strong>
+                        <span>Following</span>
+                    </li>
+                    <li>
+                        {% if data['posts'][0][7] != NULL: %}
+                        <strong>{{ data['posts'][0][7] }}</strong>
+                        {% else: %}
+                        <strong>0</strong>
+                        {% endif %}
+                        <span>Posts</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#004242" fill-opacity="1" d="M0,32L720,224L1440,128L1440,320L720,320L0,320Z"></path>
+        </svg> -->
+        <div class="about">
+            <h3>About</h3>
+            <p>Mail: {{ session["mail_user"] }}</p>
+            <p>Since: {{ session["date_user"] }}</p>
+            {% if session['country_user'] != "" %}
+            <p>Country: {{ session["country_user"] }}</p>
+            {% endif %}
+            {% if session['phone_user'] != "" %}
+            <p>Phone: {{ session["phone_user"] }}</p>
+            {% endif %}
+            <summary>{{ session["about_user"] }}</summary>
+        </div>
+
+        <div class="cont-author" id="cont-author">
+            <div class="sub-posts">
+            {% for otherPosts in data['posts'] -%}
+            {% if otherPosts[0] != data['id'] -%}
+    
+            <figure class="other-posts " onclick="location.href='/post/{{ otherPosts[1] }}-{{ otherPosts[0] }}'">
+                <figcaption>
+                    <p>{{ otherPosts[2] }}</p>
+                    <h3>{{ otherPosts[1] }}</h3>                
+                </figcaption>
+                <em>{{ otherPosts[3] }}</em>
+                <blockquote>
+                    <i class="fa fa-eye"> {{ otherPosts[4] }} </i>
+                    <i class="fa fa-message"> {{ otherPosts[5] }} </i>
+                    <i class="fa fa-thumbs-up"> {{ otherPosts[6] }} </i>
+                </blockquote>
+            </figure>
+    
+            {% endif %}
+            {% endfor %}
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'template.html' %}
+
+{% block title %}upload {% endblock %}
+{% block css %}
+<style>
+    .main-center{
+        max-width: 600px;
+        margin: 20px auto;
+    }
+    .img-container {
+        background-color: rgba(0,0,0,0.3);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        width: 90%;
+        max-width: 400px;
+        min-width: 200px;
+        min-height: 200px;
+        display: block;
+        margin:auto;
+    }
+    form p{color: red;}
+    form div{display: flex;flex: 1; gap: 10px; width: 100%;    }
+    form div button{width: 100%;}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="main-center">
+
+    <form class="main-forms" action="/upload/{{ data }}" method="POST" enctype="multipart/form-data">
+
+        {% if data =="fturl" or data == "ftupload" %}
+        {% if data == "fturl" %}
+        <label for="fpath"><b class="fa fa-link"></b> Image Address</label>
+        <input type="url" name="fpath" placeholder="Enter Image address" >
+        <p>Link any <strong>image address</strong> from blowsers (NO link address) as profile foto.</p>
+        {% else %}
+        <label for="fpath"><b class="fa fa-upload"></b> Upload Image</label>
+        <input type="file" name="fpath" accept="image/png, .jpeg, .jpg, image/gif" required>
+        <p>Upload any <strong>.png, .jpg or .gif</strong> Image as profile foto.</p>
+        {% endif %}
+        <input type="hidden" name="fcell" value="foto_user">
+        {% else %}
+        {% if data == "wpurl" %}
+        <label for="fpath"><b class="fa fa-link"></b> Image Address</label>
+        <input type="url" name="fpath" placeholder="Enter Image address">
+        <p>Link any <strong>image address</strong> from blowsers (NO link address) as profile wallpaper.</p>
+        {% else %}
+        <label for="fpath"><b class="fa fa-upload"></b> Upload Image</label>
+        <input type="file" name="fpath" accept="image/png, .jpeg, .jpg, image/gif" required>
+        <p>Upload any <strong>.png, .jpg or .gif</strong> Image as profile wallpaper.</p>
+        {% endif %}
+        <input type="hidden" name="fcell" value="wallpaper_user">
+        {% endif %}
+        <div>
+            <button type="button" onclick="history.back();"><i class="fa fa-angles-left"></i> Cancel</button>
+            <button type="submit"><i class="fa fa-cloud-arrow-up"></i> Upload & Save</button>
+        </div>
+    </form>
+
+    <div class="img-container" >
+
+    </div>
+
+    {% if (data == 'fturl' or data == 'ftupload') and session['foto_user'].startswith('static/') %}
+    <script>
+        $('.img-container').css({"background-image":"url(../{{ session['foto_user'] }})"})
+    </script>
+    {% elif data == 'fturl' or data == 'ftupload' %}
+    <script>
+        $('.img-container').css({"background-image":"url({{ session['foto_user'] }})"})
+    </script>
+    {% elif (data == 'wpurl' or data == 'wpupload') and session['wallpaper_user'].startswith('static/') %}
+    <script>
+        $('.img-container').css({"background-image":"url(../{{ session['wallpaper_user'] }})"})
+    </script>
+    {% elif data == 'wpurl' or data == 'wpupload' %}
+    <script>
+        $('.img-container').css({"background-image":"url({{ session['wallpaper_user'] }})"})
+    </script>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block js %}
+
+<script>
+    $(function () {
+        $('input[type=url]').change(function () {
+            $('img').attr('src', $(this).val())
+        })
+    })
+</script>
+{% endblock %}
