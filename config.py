@@ -9,6 +9,7 @@ class DevelopmentConfig(Config):
     MYSQL_USER = 'forlogroot@forlogdb'
     MYSQL_PASSWORD = 'Juan4544642'
     MYSQL_DB = 'forlogdb'
+    SSL_CA='/var/www/html/BaltimoreCyberTrustRoot.crt.pem'
     
 
 
