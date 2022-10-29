@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'forlogs'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_76EE6769F4B94F068FAFEAF79D4904E9 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A8C447EC47B7456ABC251C3169343F59 }}
